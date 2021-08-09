@@ -1,1 +1,3 @@
-export const navHeight = '60'
+const navHeight = '60'
+
+export default navHeight
