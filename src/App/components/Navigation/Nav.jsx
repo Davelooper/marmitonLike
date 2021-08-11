@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import LogoSrc from '../../../utils/icons/nav-logo.svg'
 import styled from "styled-components/macro";
 import { useToggle } from '../../hooks/useToggle'
@@ -8,6 +8,7 @@ import { Button } from '../../../utils/layout/Button'
 import Dropdown from './Dropdown'
 import colors from '../../../utils/style/colors'
 import navHeight from '../../../utils/style/nav'
+import { apiFetch, apiErrors } from '../../../utils/functions/apiFetch';
 
 const Navigation = styled.nav`
 display: flex;
@@ -90,6 +91,73 @@ border-left: 2px solid lightgrey;
 
 function Nav() {
     const [isDrop, toggleDrop] = useToggle(false)
+
+    const handleSubmit = async function (e) {
+        if (e.code === 'Enter') {
+            const endpoint = ''
+            const params = {
+                type: "public",
+                q: e.target.value,
+                app_id: '3ffa939b',
+                app_key: '6676ba3f216560f7212b56aa62c6d76a',
+            }
+            try {
+                const data = await apiFetch(endpoint, 'GET', params)
+                debugger
+                console.log(data)
+            } catch (e) {
+
+            }
+
+
+            //const data = fetch('https://secure-scrubland-66220.herokuapp.com/https://api.edamam.com/search?q=chiken&app_id=3ffa939b&app_key=6676ba3f216560f7212b56aa62c6d76a')
+            // Create the XHR object.
+            /* function createCORSRequest(method, url) {
+                 var xhr = new XMLHttpRequest();
+                 if ("withCredentials" in xhr) {
+                     // XHR for Chrome/Firefox/Opera/Safari.
+                     xhr.open(method, url, true);
+                 } else if (typeof XDomainRequest != "undefined") {
+                     // XDomainRequest for IE.
+                     xhr = new XMLHttpRequest();
+                     xhr.open(method, url);
+                 } else {
+                     // CORS not supported.
+                     xhr = null;
+                 }
+                 return xhr;
+             }*/
+
+            // Make the actual CORS request.
+            /* function makeCorsRequest() {
+                 const app_id = '3ffa939b'
+                 const app_key = '6676ba3f216560f7212b56aa62c6d76a'
+                 let recipe = "chiken";
+     
+                 //var url = 'https://secure-scrubland-66220.herokuapp.com/https://api.edamam.com/api/recipes/v2?app_id=' + app_id + '&app_key=' + app_key + "=spaghetti";
+                 var url = 'https://secure-scrubland-66220.herokuapp.com/https://api.edamam.com/search?q=' + 'chiken' + '&app_id=3ffa939b&app_key=6676ba3f216560f7212b56aa62c6d76a'
+                 var xhr = createCORSRequest('GET', url);
+                 if (!xhr) {
+                     alert('CORS not supported');
+                     return;
+                 }
+     
+                 // Response handlers.
+                 xhr.onload = function () {
+                     var text = xhr.responseText;
+                 };
+     
+                 xhr.onerror = function () {
+                     alert('Woops, there was an error making the request.');
+                 };
+     
+                 xhr.setRequestHeader('Content-Type', 'application/json');
+                 xhr.send();
+             }
+     
+             makeCorsRequest()*/
+        }
+    }
     return (
         <Navigation>
             <LeftContainer>
@@ -102,7 +170,7 @@ function Nav() {
                 </IconContainer>
                 <InputWrapper>
                     <SearchIcon src={SearchSrc} />
-                    <Input type="text" placeholder="Chercher une recette" />
+                    <Input type="text" placeholder="Chercher une recette" onKeyUp={handleSubmit} />
                     <SearchParameter src={SearchParameterSrc} />
                 </InputWrapper>
             </SearchContainer>
