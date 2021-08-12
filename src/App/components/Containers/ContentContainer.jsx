@@ -1,5 +1,8 @@
 import styled from 'styled-components/macro'
 
+/**
+ * The container used in home page.
+ */
 const ContentContainer = styled.div`
 margin: auto;
 width: 70%;

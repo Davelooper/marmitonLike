@@ -1,0 +1,1 @@
+export const MEAL_WORDS = ["steak", "strudel", "potato", "chicken", "pancake", "milkshake", "hamburger", "doughnut", "cheesecake"]
