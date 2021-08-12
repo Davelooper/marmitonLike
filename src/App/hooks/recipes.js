@@ -1,5 +1,6 @@
 import { apiFetch } from "../../utils/functions/apiFetch"
 import { useReducer } from "react"
+import chickenRecipes from "../../utils/const/chickenRecipes"
 
 function reducer(state, action) {
     console.log('RECIPES REDUCE', action.type, action)
@@ -29,7 +30,6 @@ function useRecipes() {
     return {
         recipes: state.recipes,
         fetchRecipes: async function (word) {
-            debugger
             const endpoint = ''
             const params = {
                 type: "public",
@@ -38,11 +38,12 @@ function useRecipes() {
                 app_key: '6676ba3f216560f7212b56aa62c6d76a',
             }
             dispatch({ type: "FETCH_RECIPES" })
+
             /*const recipes = await apiFetch(endpoint, 'GET', params)*/
-            const recipes = await require('../../utils/const/chickenRecipes')
+            const recipes = chickenRecipes
             dispatch({
                 type: "SET_RECIPES",
-                payload: recipes.default
+                payload: recipes
             })
         }
     }

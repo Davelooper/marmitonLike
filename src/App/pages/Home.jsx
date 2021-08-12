@@ -16,18 +16,16 @@ import ColumnCard from '../components/Containers/ColumnCard'
 const MainTitle = styled.h1`
 color: ${colors.primary};
 text-align: center;
+padding-top: 50px;
 `
 
 
 function Home(props) {
-    const { recipes, fetchRecipes, loading } = useRecipes()
+    const { recipes, fetchRecipes } = useRecipes()
 
     useEffect(() => {
-        debugger
         if (!recipes) {
             fetchRecipes("chicken")
-        } else {
-            console.log(recipes.filter((r, i, arr) => i >= 0 && i <= (arr.length / 3) ? r : null))
         }
     }, [recipes])
 
@@ -45,8 +43,9 @@ function Home(props) {
                             {
                                 recipes ?
                                     recipes.filter((r, i, arr) => i >= 0 && i <= (arr.length / 3)).map(
-                                        r =>
-                                            <HomeCard recipe={r.recipe} key={`${r.recipe.totalWeight}-${r.recipe.yeld}`} />
+                                        (r, i) => (i % 2 === 0) ?
+                                            <HomeCard recipe={r.recipe} key={`${r.recipe.totalWeight}-${r.recipe.yeld}`} /> :
+                                            <HomeCard Cardheight={450} recipe={r.recipe} key={`${r.recipe.totalWeight}-${r.recipe.yeld}`} />
                                     ) : <Loader />
                             }
                         </ColumnCard>
@@ -54,8 +53,9 @@ function Home(props) {
                             {
                                 recipes ?
                                     recipes.filter((r, i, arr) => i >= (arr.length / 3) && i <= (arr.length * 2 / 3)).map(
-                                        r =>
-                                            <HomeCard recipe={r.recipe} key={`${r.recipe.totalWeight}-${r.recipe.yeld}`} />
+                                        (r, i) => (i % 2 !== 0) ?
+                                            <HomeCard recipe={r.recipe} key={`${r.recipe.totalWeight}-${r.recipe.yeld}`} /> :
+                                            <HomeCard Cardheight={450} recipe={r.recipe} key={`${r.recipe.totalWeight}-${r.recipe.yeld}`} />
                                     ) : <Loader />
                             }
                         </ColumnCard>
