@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Home from './App/pages/Home'
-import Recipes from './App/pages/Recipes'
+import SearchRecipes from './App/pages/SearchRecipes';
 
 function App() {
   return (
@@ -8,8 +8,8 @@ function App() {
       <Route exact path="/">
         <Home />
       </Route>
-      <Route path="/recipes">
-        <Recipes />
+      <Route path="/searchRecipes">
+        <SearchRecipes />
       </Route>
     </Router>
   );

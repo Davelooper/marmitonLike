@@ -21,13 +21,13 @@ padding-top: 50px;
 
 
 function Home(props) {
-    const { recipes, fetchRecipes } = useRecipes()
+    const { homeRecipes, fetchHomeRecipes } = useRecipes()
 
     useEffect(() => {
-        if (!recipes) {
-            fetchRecipes("chicken")
+        if (!homeRecipes) {
+            fetchHomeRecipes("chicken")
         }
-    }, [recipes])
+    }, [homeRecipes])
 
 
     return (
@@ -41,8 +41,8 @@ function Home(props) {
                     <HomeCardsContainer>
                         <ColumnCard>
                             {
-                                recipes ?
-                                    recipes.filter((r, i, arr) => i >= 0 && i <= (arr.length / 3)).map(
+                                homeRecipes ?
+                                    homeRecipes.filter((r, i, arr) => i >= 0 && i <= (arr.length / 3)).map(
                                         (r, i) => (i % 2 === 0) ?
                                             <HomeCard recipe={r.recipe} key={`${r.recipe.totalWeight}-${r.recipe.yeld}`} /> :
                                             <HomeCard Cardheight={450} recipe={r.recipe} key={`${r.recipe.totalWeight}-${r.recipe.yeld}`} />
@@ -51,8 +51,8 @@ function Home(props) {
                         </ColumnCard>
                         <ColumnCard>
                             {
-                                recipes ?
-                                    recipes.filter((r, i, arr) => i >= (arr.length / 3) && i <= (arr.length * 2 / 3)).map(
+                                homeRecipes ?
+                                    homeRecipes.filter((r, i, arr) => i >= (arr.length / 3) && i <= (arr.length * 2 / 3)).map(
                                         (r, i) => (i % 2 !== 0) ?
                                             <HomeCard recipe={r.recipe} key={`${r.recipe.totalWeight}-${r.recipe.yeld}`} /> :
                                             <HomeCard Cardheight={450} recipe={r.recipe} key={`${r.recipe.totalWeight}-${r.recipe.yeld}`} />
@@ -61,8 +61,8 @@ function Home(props) {
                         </ColumnCard>
                         <ColumnCard>
                             {
-                                recipes ?
-                                    recipes.filter((r, i, arr) => i >= (arr.length * 2 / 3) && i <= arr.length).map(
+                                homeRecipes ?
+                                    homeRecipes.filter((r, i, arr) => i >= (arr.length * 2 / 3) && i <= arr.length).map(
                                         r =>
                                             <HomeCard recipe={r.recipe} key={`${r.recipe.totalWeight}-${r.recipe.yeld}`} />
                                     ) : <Loader />

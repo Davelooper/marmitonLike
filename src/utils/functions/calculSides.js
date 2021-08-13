@@ -6,7 +6,6 @@
  * @returns 
  */
 function calculSides(n, add = 0) {
-    debugger
     if (typeof n !== "number") {
         console.error(typeof n)
         throw new Error('Erreur, la dimension passée pour l\'icone en forme de coeur doit être un nombre.')
