@@ -26,10 +26,7 @@ function SearchCard({ recipe }) {
     let rate = generateRate()
     let stars = generateStars(starCounter(rate))
 
-    async function exists(url) {
-        const result = await fetch(url, { method: 'HEAD' });
-        return result.ok;
-    }
+
     function generateRate() {
         return (Math.floor(Math.random() * 4) + Math.random()).toFixed(1)
     }
@@ -54,25 +51,24 @@ function SearchCard({ recipe }) {
     }
 
     function generateStars(starsCount) {
-        debugger
         let stars = []
         for (let i = 0; i < starsCount[0]; i++) {
             stars = [
                 ...stars,
-                <Star src={fullStarSrc} alt="Rating star" />
+                <Star src={fullStarSrc} key={i} alt="Rating star" />
             ]
         }
         if (starsCount[1] === 1) {
             stars = [
                 ...stars,
-                <Star src={halfStarSrc} alt="Rating star" />
+                <Star src={halfStarSrc} key={'p54781'} alt="Rating star" />
             ]
         }
         const emptyStars = 5 - stars.length
         for (let i = 0; i < emptyStars; i++) {
             stars = [
                 ...stars,
-                <Star src={emptyStarSrc} alt="Rating star" />
+                <Star src={emptyStarSrc} key={`${i}p}`} alt="Rating star" />
             ]
         }
         return stars
@@ -83,7 +79,7 @@ function SearchCard({ recipe }) {
             <p>{recipe.label}</p>
             <StarContainer>
                 {stars ?
-                    stars.map(s => s) :
+                    stars :
                     <Loader />
                 }
                 <span>  {rate}</span>

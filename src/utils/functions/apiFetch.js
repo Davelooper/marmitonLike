@@ -17,7 +17,8 @@ export async function apiFetch(endpoint, method, params) {
         throw new Error('La requête doit contenir une méthode.')
     } else {
         if (method === 'GET' || method === "get") {
-            url += endpoint + '?' + (new URLSearchParams(params)).toString()
+            const finalParams = buildParams(params)
+            url += endpoint + '?' + finalParams.toString()
             response = await fetch(url, options)
         }
     }
@@ -34,3 +35,15 @@ export async function apiFetch(endpoint, method, params) {
         }
     }
 }
+
+function buildParams(params) {
+    const output = new URLSearchParams();
+    for (const [k, v] of Object.entries(params)) {
+        if (Array.isArray(v)) {
+            v.map((value) => output.append(k, value))
+        } else {
+            output.append(k, v)
+        }
+    }
+    return output;
+};

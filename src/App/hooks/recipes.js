@@ -20,7 +20,7 @@ function reducer(state, action) {
             return {
                 ...state,
                 loading: false,
-                recipes: action.payload.hits
+                recipes: action.payload
             }
         default:
             console.error('Action inconnue')
@@ -60,10 +60,20 @@ function useRecipes() {
                 q: word,
                 app_id: '3ffa939b',
                 app_key: '6676ba3f216560f7212b56aa62c6d76a',
+                field: ['uri', 'label', 'image']
             }
             dispatch({ type: "FETCH_RECIPES" })
+            /*const recipes = chickenRecipes*/
+            let recipes = await apiFetch(endpoint, 'GET', params)
+            recipes = recipes.hits.map(r => r.recipe)
 
-            const recipes = await apiFetch(endpoint, 'GET', params)
+
+
+            debugger
+            recipes.forEach(e => {
+                Object.assign(e, { 'id': e.uri.match(/#(.*)/)[1] })
+            })
+            debugger
             dispatch({
                 type: "SET_RECIPES",
                 payload: recipes

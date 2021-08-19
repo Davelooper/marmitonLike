@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import Nav from '../components/Navigation/Nav'
 import { MainContainer } from '../components/Containers/MainContainer'
 import capitalizeFirstLetter from '../../utils/functions/capitalizeFirstLetter'
+import Loader from '../components/Loader/Loader'
 
 const RecipesContainer = styled.div`
 width: 100%;
@@ -24,18 +25,21 @@ margin: 0 0 0 20px;
 font-size: 30px;
 `
 
-function SearchRecipes(props) {
+function SearchRecipes() {
     const search = (new URLSearchParams(useLocation().search)).get('search')
-    /*const { recipes, fetchRecipes } = useRecipes() */
+    const { recipes, fetchRecipes } = useRecipes(null)
 
-    /*useEffect(() => {
-        debugger
+    useEffect(() => {
         if (!recipes) {
             fetchRecipes(search)
+            console.log(recipes)
+        } else {
+            debugger
         }
-    }, [search, recipes])*/
 
-    const recipes = searchRecipes;
+    }, [search, recipes])
+
+    /*const recipes = searchRecipes;*/
     return (
         <>
             <Nav />
@@ -43,8 +47,9 @@ function SearchRecipes(props) {
                 <ContentContainer>
                     <Title>{capitalizeFirstLetter(search)}</Title>
                     <RecipesContainer>
-                        {recipes.map(r =>
-                            <SearchCard recipe={r.recipe} key={`${r.recipe.totalWeight}-${r.recipe.yeld}`} />)}
+                        {recipes ? recipes.map(r =>
+                            <SearchCard recipe={r} key={r.id} />) :
+                            <Loader />}
                     </RecipesContainer>
                 </ContentContainer>
             </MainContainer>
