@@ -33,7 +33,6 @@ function SearchRecipes() {
         if (!recipes) {
             fetchRecipes(search)
         } else {
-            debugger
         }
 
     }, [search, recipes])

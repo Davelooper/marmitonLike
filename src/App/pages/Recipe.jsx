@@ -12,11 +12,27 @@ import styled from 'styled-components/macro'
 import defaultPictureSrc from '../../utils/pictures/defaultRecipePicture.jpg'
 import generateStars from '../../utils/functions/generateStars'
 import generateRate from '../../utils/functions/generateRate'
+import colors from '../../utils/style/colors'
+import testIconSrc from '../../utils/icons/testIcon.svg'
+import weighingSrc from '../../utils/icons/weighing.svg'
+import boltSrc from '../../utils/icons/bolt.svg'
+import clockSrc from '../../utils/icons/clock.svg'
 
 const Title = styled.h1`
 `
 const Picture = styled.img``
 const StarsContainer = styled.div``
+const IconCard = styled.img`
+height: 30px;
+width: 30px;
+`
+const IconsContainer = styled.div`
+display: flex;
+& > div {
+    display: flex;
+align-items: center;
+}
+`
 
 function Recipe() {
     const id = (new URLSearchParams(useLocation().search)).get('r')
@@ -31,7 +47,7 @@ function Recipe() {
         debugger
     }, [id])*/
     const recipe = randomRecipe
-    console.log(stars)
+    console.log(recipe)
 
     return (
         <>
@@ -45,6 +61,20 @@ function Recipe() {
                             {stars.map(e => e)}
                         </StarsContainer> :
                         null}
+                    <IconsContainer>
+                        <div>
+                            <IconCard src={clockSrc} />
+                            <span>   {recipe.totalTime} min</span>
+                        </div>
+                        <div>
+                            <IconCard src={weighingSrc} />
+                            <span>   {parseInt(recipe.totalWeight, 10)} gr</span>
+                        </div>
+                        <div>
+                            <IconCard src={boltSrc} />
+                            <span>   {parseInt(recipe.calories, 10)} cal</span>
+                        </div>
+                    </IconsContainer>
                 </ContentContainer>
             </MainContainer>
         </>
