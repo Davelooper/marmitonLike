@@ -92,12 +92,14 @@ border-left: 2px solid lightgrey;
 function Nav() {
     const [isDrop, toggleDrop] = useToggle(false)
     const history = useHistory()
+
     const handleSubmit = async function (e) {
         e.preventDefault()
         if (e.code === 'Enter') {
             history.push('/searchRecipes?search=' + e.target.value)
         }
     }
+
     return (
         <Navigation>
             <LeftContainer>

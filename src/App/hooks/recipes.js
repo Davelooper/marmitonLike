@@ -22,6 +22,12 @@ function reducer(state, action) {
                 loading: false,
                 recipes: action.payload
             }
+        case "SET_RECIPE":
+            return {
+                ...state,
+                loading: false,
+                recipe: action.payload
+            }
         default:
             console.error('Action inconnue')
     }
@@ -32,11 +38,13 @@ function useRecipes() {
         loading: false,
         recipes: null,
         homeRecipes: null,
+        recipe: null
     })
 
     return {
         recipes: state.recipes,
         homeRecipes: state.homeRecipes,
+        recipe: state.recipe,
         fetchHomeRecipes: async function () {
             /*const endpoint = ''
             const params = {
@@ -66,18 +74,29 @@ function useRecipes() {
             /*const recipes = chickenRecipes*/
             let recipes = await apiFetch(endpoint, 'GET', params)
             recipes = recipes.hits.map(r => r.recipe)
-
-
-
-            debugger
             recipes.forEach(e => {
                 Object.assign(e, { 'id': e.uri.match(/#(.*)/)[1] })
             })
-            debugger
             dispatch({
                 type: "SET_RECIPES",
                 payload: recipes
             })
+        },
+        fetchRecipe: async function (id) {
+            const endpoint = '/' + id
+            const params = {
+                type: "public",
+                app_id: '3ffa939b',
+                app_key: '6676ba3f216560f7212b56aa62c6d76a',
+            }
+            dispatch({ type: "FETCH_RECIPES" })
+            const recipe = await apiFetch(endpoint, 'GET', params)
+            debugger
+            dispatch({
+                type: "SET_RECIPE",
+                payload: recipe.recipe
+            })
+
         }
     }
 }

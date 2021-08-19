@@ -32,7 +32,6 @@ function SearchRecipes() {
     useEffect(() => {
         if (!recipes) {
             fetchRecipes(search)
-            console.log(recipes)
         } else {
             debugger
         }
