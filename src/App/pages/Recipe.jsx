@@ -19,6 +19,9 @@ import boltSrc from '../../utils/icons/bolt.svg'
 import clockSrc from '../../utils/icons/clock.svg'
 import chickenRecipes from '../../utils/const/chickenRecipes'
 import { Button } from '../../utils/layout/Button'
+import RatingStar from '../components/Rating/RatingStar'
+import firstNames from '../../utils/const/firstNames'
+import Comment from '../components/Comments/Comment'
 
 const Title = styled.h1`
 font-size: 25px;
@@ -82,6 +85,16 @@ height: 125px;
 border-radius: 20px;
 box-shadow: 1px 2px 9px 0 ${colors.secondary};
 `
+const CommentsContainer = styled.div`
+display: flex;
+margin-top: 30px;
+padding: 0 20px 0 20px;
+`
+const Rating = styled.div`
+margin-top: 50px;
+padding: 0 20px 0 20px;
+`
+const AuthorLetter = styled.div``
 
 function Recipe() {
     const id = (new URLSearchParams(useLocation().search)).get('r')
@@ -96,7 +109,7 @@ function Recipe() {
         debugger
     }, [id])*/
     const recipe = randomRecipe
-    console.log(recipe)
+    console.log(firstNames)
 
     return (
         <>
@@ -160,10 +173,17 @@ function Recipe() {
                             width={250}
                             height={50}
                         ><a style={{ display: "table-cell" }} href={recipe.url} target="_blank">Voir la préparation</a></Button>
-
-
-                        <p>C'est terminé, qu'en avez vous pensé ?</p>
                     </RecipeContent>
+                    <Rating>
+                        <p>C'est terminé, qu'en avez vous pensé ?</p>
+                        <RatingStar starSize={32} />
+                    </Rating>
+
+                    <CommentsContainer>
+                        <Comment />
+                        <Comment />
+                        <Comment />
+                    </CommentsContainer>
                 </ContentContainer>
             </MainContainer>
         </>
