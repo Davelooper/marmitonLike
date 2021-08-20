@@ -5,8 +5,8 @@ import fullStarSrc from '../icons/fullStar.svg'
 import emptyStarSrc from '../icons/emptyStar.svg'
 
 const Star = styled.img`
-width: 14px;
-height: 14px;
+width: ${({ size }) => size ? `${size}px;` : '14px;'}
+height: ${({ size }) => size ? `${size}px;` : '14px;'}
 `
 
 /**
@@ -33,26 +33,26 @@ function starCounter(rate) {
      * @param {number} rate 
      * @returns 
      */
-function generateStars(rate) {
+function generateStars(rate, size) {
     let stars = []
     const starsCount = starCounter(rate)
     for (let i = 0; i < starsCount[0]; i++) {
         stars = [
             ...stars,
-            <Star src={fullStarSrc} key={i} alt="Rating star" />
+            <Star src={fullStarSrc} size={size} key={i} alt="Rating star" />
         ]
     }
     if (starsCount[1] === 1) {
         stars = [
             ...stars,
-            <Star src={halfStarSrc} key={'p54781'} alt="Rating star" />
+            <Star src={halfStarSrc} size={size} key={'p54781'} alt="Rating star" />
         ]
     }
     const emptyStars = 5 - stars.length
     for (let i = 0; i < emptyStars; i++) {
         stars = [
             ...stars,
-            <Star src={emptyStarSrc} key={`${i}p}`} alt="Rating star" />
+            <Star src={emptyStarSrc} size={size} key={`${i}p}`} alt="Rating star" />
         ]
     }
     return stars

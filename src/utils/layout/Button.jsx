@@ -2,10 +2,14 @@ import colors from "../style/colors"
 import styled from "styled-components/macro"
 
 const StyledButton = styled.button`
+display: flex;
+justify-content: center;
+align-items: center;
 border: 1px solid ${colors.primary};
 border-radius: 20px;
 cursor: pointer;
 transition: background-color 0.3s ease-in-out;
+font-size: ${({ height }) => height && (height - 25) + 'px;'}
 ${({ background }) => harmonize(background)}
 ${({ height }) =>
         height &&
@@ -17,6 +21,11 @@ ${({ width }) =>
     }
 &:hover {
     ${({ background }) => harmonize(background, { revert: true })}
+}
+& > a {
+    text-decoration: none;
+    color: inherit;
+    font-size: inherit;
 }
 `
 
