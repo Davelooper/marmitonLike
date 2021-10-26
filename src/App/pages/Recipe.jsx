@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useLocation } from 'react-router'
 import { useEffect } from 'react'
@@ -100,91 +100,94 @@ function Recipe() {
     const id = (new URLSearchParams(useLocation().search)).get('r')
     const rate = generateRate()
     const stars = generateStars(rate, 18)
-    /*const { recipe, fetchRecipe } = useRecipes()
+    const { recipe, fetchRecipe } = useRecipes()
+
 
     useEffect(() => {
+        console.log(id)
         if (!recipe) {
             fetchRecipe(id)
         }
-        debugger
-    }, [id])*/
-    const recipe = randomRecipe
-    console.log(firstNames)
+    }, [id])
+
 
     return (
         <>
             <Nav />
             <MainContainer>
-                <ContentContainer>
-                    <RecipeContent>
-                        <Title>{recipe.label}</Title>
-                        {stars ?
-                            <StarsContainer>
-                                {stars}
-                                <span>{rate} / 5</span>
-                            </StarsContainer> :
-                            null
-                        }
-                        <Picture src={recipe.image} onError={(e) => { e.target.onerror = null; e.target.src = defaultPictureSrc }} />
-                        <IconsContainer>
-                            <div>
-                                <IconCard src={clockSrc} />
-                                <span>   {recipe.totalTime} min</span>
-                            </div>
-                            <div>
-                                <IconCard src={weighingSrc} />
-                                <span>   {parseInt(recipe.totalWeight, 10)} gr</span>
-                            </div>
-                            <div>
-                                <IconCard src={boltSrc} />
-                                <span>   {parseInt(recipe.calories, 10)} cal</span>
-                            </div>
-                        </IconsContainer>
-                        <IngredientsContainer>
-                            <h2>Ingrédients</h2>
-                            <div>
-                                {
-                                    recipe.ingredients.map((e, i) => {
-                                        return <Ingredient key={i}>
-                                            {
-                                                e.image ?
-                                                    <PictureIngredient
-                                                        src={e.image}
-                                                        alt="An ingredient"
-                                                        onError={(e) => {
-                                                            e.target.onerror = null;
-                                                            e.target.src = defaultPictureSrc
-                                                        }} /> :
-                                                    <PictureIngredient
-                                                        src={defaultPictureSrc}
-                                                        alt="An ingredient"
-                                                    />
-                                            }
-                                            <p>{e.text}</p>
-                                        </Ingredient>
+                {recipe ?
+                    <ContentContainer>
+                        <RecipeContent>
+                            <Title>{recipe.label}</Title>
+                            {stars ?
+                                <StarsContainer>
+                                    {stars}
+                                    <span>{rate} / 5</span>
+                                </StarsContainer> :
+                                null
+                            }
+                            <Picture src={recipe.image} onError={(e) => { e.target.onerror = null; e.target.src = defaultPictureSrc }} />
+                            <IconsContainer>
+                                <div>
+                                    <IconCard src={clockSrc} />
+                                    <span>   {recipe.totalTime} min</span>
+                                </div>
+                                <div>
+                                    <IconCard src={weighingSrc} />
+                                    <span>   {parseInt(recipe.totalWeight, 10)} gr</span>
+                                </div>
+                                <div>
+                                    <IconCard src={boltSrc} />
+                                    <span>   {parseInt(recipe.calories, 10)} cal</span>
+                                </div>
+                            </IconsContainer>
+                            <IngredientsContainer>
+                                <h2>Ingrédients</h2>
+                                <div>
+                                    {
+                                        recipe.ingredients.map((e, i) => {
+                                            return <Ingredient key={i}>
+                                                {
+                                                    e.image ?
+                                                        <PictureIngredient
+                                                            src={e.image}
+                                                            alt="An ingredient"
+                                                            onError={(e) => {
+                                                                e.target.onerror = null;
+                                                                e.target.src = defaultPictureSrc
+                                                            }} /> :
+                                                        <PictureIngredient
+                                                            src={defaultPictureSrc}
+                                                            alt="An ingredient"
+                                                        />
+                                                }
+                                                <p>{e.text}</p>
+                                            </Ingredient>
+                                        }
+                                        )
+
                                     }
-                                    )
+                                </div>
+                            </IngredientsContainer>
+                            <Button
+                                background={colors.primary}
+                                width={250}
+                                height={50}
+                            ><a style={{ display: "table-cell" }} href={recipe.url} target="_blank">Voir la préparation</a></Button>
+                        </RecipeContent>
+                        <Rating>
+                            <p>C'est terminé, qu'en avez vous pensé ?</p>
+                            <RatingStar starSize={32} />
+                        </Rating>
 
-                                }
-                            </div>
-                        </IngredientsContainer>
-                        <Button
-                            background={colors.primary}
-                            width={250}
-                            height={50}
-                        ><a style={{ display: "table-cell" }} href={recipe.url} target="_blank">Voir la préparation</a></Button>
-                    </RecipeContent>
-                    <Rating>
-                        <p>C'est terminé, qu'en avez vous pensé ?</p>
-                        <RatingStar starSize={32} />
-                    </Rating>
-
-                    <CommentsContainer>
-                        <Comment />
-                        <Comment />
-                        <Comment />
-                    </CommentsContainer>
-                </ContentContainer>
+                        <CommentsContainer>
+                            <Comment />
+                            <Comment />
+                            <Comment />
+                        </CommentsContainer>
+                    </ContentContainer>
+                    :
+                    <Loader />}
             </MainContainer>
         </>
     )

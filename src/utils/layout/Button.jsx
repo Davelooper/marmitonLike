@@ -29,12 +29,13 @@ ${({ width }) =>
 }
 `
 
-export function Button({ children, width, height, background = "white" }) {
-
+export function Button({ children, width, height, background = "white", onClick }) {
     return <StyledButton
         width={width}
         height={height}
-        background={background}>{children}</StyledButton>
+        background={background}
+        onClick={onClick}>{children}
+    </StyledButton>
 }
 
 /**

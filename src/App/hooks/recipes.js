@@ -20,7 +20,9 @@ function reducer(state, action) {
             return {
                 ...state,
                 loading: false,
-                recipes: action.payload
+                recipes: action.payload.recipes,
+                recipesAccount: action.payload.recipesAccount
+
             }
         case "SET_RECIPE":
             return {
@@ -45,6 +47,7 @@ function useRecipes() {
         recipes: state.recipes,
         homeRecipes: state.homeRecipes,
         recipe: state.recipe,
+        recipesAccount: state.recipesAccount,
         fetchHomeRecipes: async function () {
             /*const endpoint = ''
             const params = {
@@ -73,13 +76,14 @@ function useRecipes() {
             dispatch({ type: "FETCH_RECIPES" })
             /*const recipes = chickenRecipes*/
             let recipes = await apiFetch(endpoint, 'GET', params)
+            const recipesAccount = recipes.count
             recipes = recipes.hits.map(r => r.recipe)
             recipes.forEach(e => {
                 Object.assign(e, { 'id': e.uri.match(/#(.*)/)[1] })
             })
             dispatch({
                 type: "SET_RECIPES",
-                payload: recipes
+                payload: { recipesAccount, recipes }
             })
         },
         fetchRecipe: async function (id) {
@@ -91,7 +95,6 @@ function useRecipes() {
             }
             dispatch({ type: "FETCH_RECIPES" })
             const recipe = await apiFetch(endpoint, 'GET', params)
-            debugger
             dispatch({
                 type: "SET_RECIPE",
                 payload: recipe.recipe
