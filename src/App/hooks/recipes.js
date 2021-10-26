@@ -64,14 +64,16 @@ function useRecipes() {
                 payload: recipes
             })
         },
-        fetchRecipes: async function (word) {
+        fetchRecipes: async function (word, from = 1, to = 20) {
             const endpoint = ''
             const params = {
                 type: "public",
                 q: word,
+                from: from,
+                to: to,
                 app_id: '3ffa939b',
                 app_key: '6676ba3f216560f7212b56aa62c6d76a',
-                field: ['uri', 'label', 'image']
+                field: ['uri', 'label', 'image'],
             }
             dispatch({ type: "FETCH_RECIPES" })
             /*const recipes = chickenRecipes*/

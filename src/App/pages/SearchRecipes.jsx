@@ -47,22 +47,26 @@ function SearchRecipes() {
     const { recipes, recipesAccount, fetchRecipes } = useRecipes(null)
     const [search, setSearch] = useState('')
     const [shouldUpdateRecipes, setShouldUpdateRecipes] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1)
     const resultsPerPages = 20
     let pagesAccount = 1
     let pages = [1]
-    const [currentPage, setCurrentPage] = useState(1)
+    let lastPage = null
+    let recipesPerPages = 20
+    let from = 1
+    let to = 20
 
     if (recipes) {
 
         pagesAccount = recipesAccount / resultsPerPages
         pages = [...Array(pagesAccount + 1).keys()].slice(1)
+        lastPage = pages[pages.length - 1]
+        from = recipesPerPages * currentPage
+        to = from + recipesPerPages
     }
 
 
     useEffect(() => {
-        if (recipes) {
-        }
-        console.log(currentPage)
         if (research !== null && research !== "") {
             if (research !== search) {
                 setSearch(research)
@@ -73,15 +77,16 @@ function SearchRecipes() {
 
     useEffect(() => {
         if (shouldUpdateRecipes) {
-            fetchRecipes(search)
+            fetchRecipes(search, from, to)
             setShouldUpdateRecipes(false)
         }
     })
 
+
     const handlePageClick = function (n) {
-        debugger
         if (n) {
             setCurrentPage(n)
+            /*setShouldUpdateRecipes(true)*/ //Ligne à décommenter lorsque l'api permettra d'avoir plus que les 20 premiers resultats.
         }
     }
 
@@ -98,7 +103,7 @@ function SearchRecipes() {
                     </RecipesContainer>
                     <Pagination>
                         {
-                            generatePagination(pages, pagesAccount, currentPage, handlePageClick)
+                            generatePagination(pages, pagesAccount, currentPage, handlePageClick, lastPage)
                         }
                     </Pagination>
                 </ContentContainer>
@@ -107,34 +112,74 @@ function SearchRecipes() {
     )
 }
 
-function generatePagination(pages, pagesAccount, currentPage, handlePageClick) {
+function generatePagination(pages, pagesAccount, currentPage, handlePageClick, lastPage) {
 
-    if (pages <= 10) {
+    if (currentPage <= 10) {
         return <>
             {
                 pages.map(n =>
-                    <Button
-                        onClick={() => handlePageClick(n)}
-                        height={45}
-                        width={45} key={n}>{n}</Button>)
-            }
-        </>
-
-    } else {
-        return <>
-            {
-                pages.map(n =>
-                    (n >= currentPage && n < currentPage + 8) ?
+                    n <= 10 && n < currentPage ?
                         <Button
+                            onClick={() => handlePageClick(n)}
                             height={45}
-                            width={45}
-                            key={n}
-                            onClick={() => handlePageClick(n)}>{n}</Button> : null
-                )
+                            width={45} key={n}>{n}</Button> : null)
+            }
+            <PageNumber
+            >{currentPage}</PageNumber>
+            {
+                pages.map(n =>
+                    n <= 10 && n > currentPage ?
+                        <Button
+                            onClick={() => handlePageClick(n)}
+                            height={45}
+                            width={45} key={n}>{n}</Button> : null)
             }
             <Button
+                onClick={() => handlePageClick(11)}
                 height={45}
-                width={45}>...</Button>
+                width={45}>11</Button>
+            <PageNumber
+            >...</PageNumber>
+            <Button
+                height={45}
+                width={45}
+                onClick={() => handlePageClick(pages.length - 1)}
+            >{pages[pages.length - 1]}</Button>
+        </>
+    } else if (currentPage > 10 && currentPage < lastPage - 4) {
+        return <>
+            <Button
+                height={45}
+                width={45}
+                onClick={() => handlePageClick(1)}>1</Button>
+            <PageNumber
+            >...</PageNumber>
+            {
+                pages.map((n) =>
+                (n >= currentPage - 4 && n < currentPage ?
+                    <Button
+                        height={45}
+                        width={45}
+                        key={n}
+                        onClick={() => handlePageClick(n)}>{n}</Button> : null
+                ))
+
+            }
+            <PageNumber
+            >{currentPage}</PageNumber>
+            {
+                pages.map((n) =>
+                (n > currentPage && n <= currentPage + 4 ?
+                    <Button
+                        height={45}
+                        width={45}
+                        key={n}
+                        onClick={() => handlePageClick(n)}>{n}</Button> : null
+                ))
+
+            }
+            <PageNumber
+            >...</PageNumber>
             <Button
                 height={45}
                 width={45}
@@ -142,9 +187,42 @@ function generatePagination(pages, pagesAccount, currentPage, handlePageClick) {
             >{pages[pages.length - 1]}</Button>
 
         </>
-    }
+    } else if (currentPage > 10 && currentPage >= lastPage - 4) {
+        return <>
+            <Button
+                height={45}
+                width={45}
+                onClick={() => handlePageClick(1)}>1</Button>
+            <PageNumber
+            >...</PageNumber>
+            {
+                pages.map((n) =>
+                (n >= currentPage - 4 && n < currentPage ?
+                    <Button
+                        height={45}
+                        width={45}
+                        key={n}
+                        onClick={() => handlePageClick(n)}>{n}</Button> : null
+                ))
 
+            }
+            <PageNumber
+            >{currentPage}</PageNumber>
+            {
+                pages.map((n) =>
+                (n > currentPage && n <= currentPage + 4 ?
+                    <Button
+                        height={45}
+                        width={45}
+                        key={n}
+                        onClick={() => handlePageClick(n)}>{n}</Button> : null
+                ))
+
+            }
+        </>
+    }
 }
+
 
 SearchRecipes.propTypes = {
 
